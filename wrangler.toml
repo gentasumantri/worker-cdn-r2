@@ -1,0 +1,40 @@
+name = "worker-cdn-r2"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Auto-re-enabled on every deploy unless held off here.
+send_metrics = false
+workers_dev = false
+preview_urls = false
+
+# Logs + traces for `wrangler tail` and the dashboard logs panel.
+# Note: `invocation_logs = true` captures full request URLs, including the
+# HMAC `sig` query param on private paths. Flip to false if log access is
+# broader than the token-replay window you accept.
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = true
+persist = true
+head_sampling_rate = 1
+
+# Uncomment to declare the R2 binding in this file. Otherwise set it via
+# CF dashboard (Worker > Settings > Bindings > Add > R2 bucket) with
+# binding name "BUCKET" so `env.BUCKET` resolves in src/index.js.
+# [[r2_buckets]]
+# binding = "BUCKET"
+# bucket_name = ""
+
+# Uncomment to deploy vars from this file instead of the CF dashboard.
+# `SIGNING_KEY` is always a secret. Set via dashboard or `wrangler secret put`.
+# [vars]
+# PUBLIC_PATH_PREFIX = "public"   # custom prefix, or "*" for full public, or leave unset for all-private
+# PUBLIC_CACHE_TTL = "86400"
